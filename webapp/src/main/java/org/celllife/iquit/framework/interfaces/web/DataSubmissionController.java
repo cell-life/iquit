@@ -35,8 +35,8 @@ public class DataSubmissionController {
             data = data + line;
         }
 
+        // TODO: This logic should be stripped out to an application service!
         Map<String, List<String>> parameterMap = convertToParameters(data);
-
         sendDataToCapture(convertToXml(parameterMap));
 
     }
