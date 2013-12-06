@@ -1,5 +1,6 @@
 package org.celllife.iquit.framework.interfaces.web;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,14 +48,13 @@ public class DataSubmissionController {
 
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/xml");
-
         byte[] encoded = Base64.encode("admin:poekie1".getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoded);
 
         // Send post request
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes("hello");
+        wr.writeBytes(data);
         wr.flush();
         wr.close();
 
@@ -74,28 +74,28 @@ public class DataSubmissionController {
 
     public String convertToXml(Map<String, List<String>> parameterMap) {
 
-        String xmlString = "<FormData><data><?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+        String xmlString = "<FormData><data>" + StringEscapeUtils.escapeHtml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 
-        xmlString = xmlString.concat("<example_study_iquit_form_v1 " +
+        xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<example_study_iquit_form_v1 " +
                 "xmlns=\"http://www.w3.org/2002/xforms\" " +
                 "name=\"iQuit Form_v1\" " +
                 "id=\"2\" " +
                 "formKey=\"example_study_iquit_form_v1\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
+                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"));
 
         for (String parameter : parameterMap.keySet()) {
 
             if (parameterMap.get(parameter).get(0) != "") {
 
-                xmlString = xmlString.concat("<" + parameter + " " +
+                xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<" + parameter + " " +
                         "xmlns=\"http://www.w3.org/2002/xforms\">" +
                         parameterMap.get(parameter).get(0) +
-                        "<\\" + parameter + ">");
+                        "<\\" + parameter + ">"));
             }
 
         }
 
-        xmlString.concat("/example_study_iquit_form_v1>\n" +
+        xmlString.concat(StringEscapeUtils.escapeHtml("/example_study_iquit_form_v1>\n") +
                 "</FormData></data>");
 
         return xmlString;
