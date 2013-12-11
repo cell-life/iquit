@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -35,7 +35,7 @@
 
     <hr>
 
-    <form role="form" action="service/iquit-form" method="post">
+    <form role="form">
         <div class="form-group">
             <label for="gender">Are you male or female?</label>
             <input type="text" class="form-control" id="gender" name="gender" placeholder="male/female">
@@ -73,20 +73,8 @@
             <label for="pregnancy_plans">Are you planning to fall pregnant?</label>
             <input type="text" class="form-control" id="pregnancy_plans" name="pregnancy_plans" placeholder="YES or NO">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button id="button" type="button" class="btn btn-default">Submit</button>
     </form>
-
-    <!--<?xml version="1.0" encoding="UTF-8"?>
-    <example_study_iquit_form_v1 xmlns="http://www.w3.org/2002/xforms" name="iQuit Form_v1" id="2" formKey="example_study_iquit_form_v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-        <gender xmlns="http://www.w3.org/2002/xforms">female</gender>
-        <year_of_birth xmlns="http://www.w3.org/2002/xforms">1984</year_of_birth>
-        <quit_date xmlns="http://www.w3.org/2002/xforms">2013-12-16</quit_date>
-        <smoking_habit xmlns="http://www.w3.org/2002/xforms">every_few_hours</smoking_habit>
-        <medical_conditions xmlns="http://www.w3.org/2002/xforms">tb emphysema</medical_conditions>
-        <drinking_habit xmlns="http://www.w3.org/2002/xforms">up_to_2_drinks_at_a_time</drinking_habit>
-        <pregnancy_plans xmlns="http://www.w3.org/2002/xforms">no</pregnancy_plans>
-    </example_study_iquit_form_v1>-->
-
 
     <hr>
 
@@ -95,6 +83,18 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("button").on("click", function (e) {
+            var data = $("form").serialize();
+            console.log("posting: " + data);
+            $.post("service/iquit-form", data, function (data, status) {
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
