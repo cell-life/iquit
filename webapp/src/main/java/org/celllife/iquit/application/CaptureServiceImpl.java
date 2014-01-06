@@ -1,18 +1,17 @@
 package org.celllife.iquit.application;
 
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 @Service
 public class CaptureServiceImpl implements CaptureService {
@@ -29,8 +28,6 @@ public class CaptureServiceImpl implements CaptureService {
     String capturePassword;
 
     public void sendDataToCapture(Map<String, List<String>> parameters) throws Exception {
-
-        Properties prop = new Properties();
 
         URL url = new URL(captureUrl);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
