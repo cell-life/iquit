@@ -1,4 +1,4 @@
-package org.celllife.iquit.interfaces.web.error;
+package org.celllife.iquit.framework.interfaces.web.error;
 
 import java.text.MessageFormat;
 
