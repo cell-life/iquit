@@ -18,6 +18,7 @@
         <spring.version>3.2.1.RELEASE</spring.version>
         <spring-integration.version>2.2.1.RELEASE</spring-integration.version>
         <spring-security.version>3.1.0.RELEASE</spring-security.version>
+        <drools.version>5.5.0.Final</drools.version>
     </properties>
 
     <build>
@@ -471,6 +472,29 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            
+            <!--  Drools -->
+            <dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-core</artifactId>
+				<version>${drools.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-compiler</artifactId>
+				<version>${drools.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-spring</artifactId>
+				<version>${drools.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mvel</groupId>
+				<artifactId>mvel2</artifactId>
+				<version>2.1.8.Final</version>
+			</dependency>
+		            
 
         </dependencies>
 
