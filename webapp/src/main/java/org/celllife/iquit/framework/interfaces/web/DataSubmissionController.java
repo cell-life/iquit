@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.celllife.iquit.application.capture.CaptureService;
+import org.celllife.iquit.application.domain.capture.CaptureContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,22 @@ public class DataSubmissionController {
 
     @Autowired
     CaptureService captureService;
+
+    @Value("${capture.signup.study.id}")
+    String signupStudyId;
+
+    @Value("${capture.signup.form.id}")
+    String signupFormId;
+
+    @Value("${capture.signup.form.version.name}")
+    String signupFormVersionName;
+
+    @Value("${capture.signup.form.version.id}")
+    String signupFormVersionId;
+
+    @Value("${capture.signup.form.version.binding}")
+    String signupFormVersionBinding;
+
 
     @ResponseBody
     @RequestMapping(value = "/service/iquit-form", method = RequestMethod.POST)
@@ -36,7 +54,9 @@ public class DataSubmissionController {
         }
 
         Map<String, List<String>> parameterMap = convertToParameters(data);
-        captureService.sendDataToCapture(parameterMap);
+
+        CaptureContext context = new CaptureContext(signupStudyId, signupFormId, signupFormVersionName, signupFormVersionId, signupFormVersionBinding);
+        captureService.sendDataToCapture(context, parameterMap);
 
     }
 
