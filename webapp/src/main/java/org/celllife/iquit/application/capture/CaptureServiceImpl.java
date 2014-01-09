@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
@@ -31,9 +30,9 @@ public class CaptureServiceImpl implements CaptureService {
 	String capturePassword;
 
 	@Async("defaultTaskExecutor")
-	public void sendDataToCapture(CaptureContext captureContext, Map<String, List<String>> parameters) throws Exception {
+	public void sendDataToCapture(CaptureContext captureContext, Map<String, String> parameters) throws Exception {
 
-		String xml = convertToXml(captureContext, parameters);
+		String xml = createRequestXml(captureContext, parameters);
 		if (log.isDebugEnabled()) {
 			log.debug("XML to submit to Capture " + xml);
 		}
@@ -101,32 +100,46 @@ public class CaptureServiceImpl implements CaptureService {
 		return submitUrl.toString();
 	}
 
-	String convertToXml(CaptureContext captureContext, Map<String, List<String>> parameterMap) {
+	String createRequestXml(CaptureContext captureContext, Map<String, String> parameterMap) {
 
-		String xmlString = "<FormData><data>"
-				+ StringEscapeUtils.escapeHtml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		StringBuilder xml = new StringBuilder();
 
-		xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<" + captureContext.getFormVersionBinding() + " "
-				+ "xmlns=\"http://www.w3.org/2002/xforms\" " + "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-				+ "name=\"" + captureContext.getFormVersionName() + "\" " + "id=\"" + captureContext.getFormVersionId()
-				+ "\" " + "formKey=\"" + captureContext.getFormVersionBinding() + "\">"));
+		xml.append("<FormData><data>");
+		xml.append(StringEscapeUtils.escapeHtml(convertToDataXml(captureContext, parameterMap)));
+		xml.append("</data></FormData>");
+
+		return xml.toString();
+	}
+	
+	String convertToDataXml(CaptureContext captureContext, Map<String, String> parameterMap) {
+		StringBuilder dataXml = new StringBuilder();
+		
+		dataXml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		
+		dataXml.append("<");
+		dataXml.append(captureContext.getFormVersionBinding());
+		dataXml.append(" xmlns=\"http://www.w3.org/2002/xforms\" " + "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
+		dataXml.append(" name=\"");
+		dataXml.append(captureContext.getFormVersionName());
+		dataXml.append("\" id=\"");
+		dataXml.append(captureContext.getFormVersionId());
+		dataXml.append("\" formKey=\"");
+		dataXml.append(captureContext.getFormVersionBinding());
+		dataXml.append("\">");
 
 		for (String parameter : parameterMap.keySet()) {
-			if (parameterMap.get(parameter).get(0) != "") {
-
-				xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<" + parameter + ">"));
-
-				for (String value : parameterMap.get(parameter)) {
-					xmlString = xmlString + StringEscapeUtils.escapeHtml(value + " ");
-				}
-
-				xmlString = xmlString + StringEscapeUtils.escapeHtml("</" + parameter + ">");
+			String value = parameterMap.get(parameter);
+			if (value != null && !value.trim().equals("")) {
+				dataXml.append("<" + parameter + ">");
+				dataXml.append(value);
+				dataXml.append("</" + parameter + ">");
 			}
 		}
 
-		xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("</" + captureContext.getFormVersionBinding() + ">")
-				+ "</data></FormData>");
-
-		return xmlString;
+		dataXml.append("</");
+		dataXml.append(captureContext.getFormVersionBinding());
+		dataXml.append(">");
+		
+		return dataXml.toString();
 	}
 }
