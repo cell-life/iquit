@@ -1,12 +1,15 @@
 package org.celllife.iquit.application.domain.campaignselector;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Class that contains a parameter map that can be used from a drools rule file and a return value that can be returned
  */
-public class RulesContext {
+public class RulesContext implements Serializable {
 	
+	private static final long serialVersionUID = 1705322622140199558L;
+
 	private Map<String, Object> parameters;
 	private Object returnValue;
 	
