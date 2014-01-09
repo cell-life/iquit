@@ -5,15 +5,16 @@ import java.io.Serializable;
 /**
  * Stores all the relevant information needed to submit data to capture.
  * 
- * This includes the information about the FormDefVersion, the Form and the associated Study.
+ * This includes the information about the FormDefVersion, the Form and the
+ * associated Study.
  */
 public class CaptureContext implements Serializable {
 
 	private static final long serialVersionUID = -1483066301300412317L;
-	
+
 	private String studyId;
 	private String formId;
-	private String formVersionName; 
+	private String formVersionName;
 	private String formVersionId;
 	private String formVersionBinding;
 
