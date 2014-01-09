@@ -13,6 +13,7 @@ import org.celllife.iquit.application.domain.capture.CaptureContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,7 @@ public class CaptureServiceImpl implements CaptureService {
     @Value("${capture.password}")
     String capturePassword;
 
+	@Async("defaultTaskExecutor")
     public void sendDataToCapture(CaptureContext captureContext, Map<String, List<String>> parameters) throws Exception {
 
     	String xml = convertToXml(captureContext, parameters);
