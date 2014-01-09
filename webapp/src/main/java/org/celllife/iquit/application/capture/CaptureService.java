@@ -1,4 +1,4 @@
-package org.celllife.iquit.application;
+package org.celllife.iquit.application.capture;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.celllife.iquit.application;
+package org.celllife.iquit.application.capture;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
@@ -28,6 +28,9 @@ public class CaptureServiceImpl implements CaptureService {
     String capturePassword;
 
     public void sendDataToCapture(Map<String, List<String>> parameters) throws Exception {
+    	if (log.isDebugEnabled()) {
+    		log.debug("Sending data to the Capture server '"+captureUrl+"' as user '"+captureUser+"'");
+    	}
 
         URL url = new URL(captureUrl);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -39,18 +42,27 @@ public class CaptureServiceImpl implements CaptureService {
         httpURLConnection.setDoOutput(true);
 
         DataOutputStream dataOutputStream = new DataOutputStream(httpURLConnection.getOutputStream());
-        dataOutputStream.writeBytes(convertToXml(parameters));
+        String xml = convertToXml(parameters);
+        if (log.isDebugEnabled()) {
+        	log.debug("XML to submit to Capture "+xml);
+        }
+        dataOutputStream.writeBytes(xml);
         dataOutputStream.flush();
         dataOutputStream.close();
 
         int responseCode = httpURLConnection.getResponseCode();
 
         if (responseCode != 200) {
-            log.error("Could not submit data to the Capture server.");
+            log.error("Could not submit data to the Capture server. Response code returned='"+responseCode+"' URL='"+captureUrl+"' username='"+captureUser+"'");
+            if (!log.isDebugEnabled()) {
+            	log.error("XML submitted: "+xml);
+            }
+        } else {
+        	log.debug("Data submitted successfully to the Capture server.");
         }
     }
 
-    private String convertToXml(Map<String, List<String>> parameterMap) {
+    String convertToXml(Map<String, List<String>> parameterMap) {
 
         String xmlString = "<FormData><data>" + StringEscapeUtils.escapeHtml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 
@@ -65,8 +77,7 @@ public class CaptureServiceImpl implements CaptureService {
 
             if (parameterMap.get(parameter).get(0) != "") {
 
-                xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<" + parameter + " " +
-                        "xmlns=\"http://www.w3.org/2002/xforms\">"));
+                xmlString = xmlString.concat(StringEscapeUtils.escapeHtml("<" + parameter + ">"));
 
                 for (String value : parameterMap.get(parameter))    {
                     xmlString = xmlString + StringEscapeUtils.escapeHtml(value + " ");
