@@ -1,0 +1,21 @@
+import org.celllife.iquit.framework.interfaces.validator.FormValidationContext
+ 
+rule "Check year of birth is numbers"
+	no-loop true 
+when
+     $params : FormValidationContext(((String)get("year")).matches(".*\\d.*") == false);
+then
+     System.out.println("Year does not contain numbers");
+     $params.setValidationError("Please enter only numbers for your year of birth");
+     update($params);
+end
+
+rule "Check year of birth is only 4 digits"
+	no-loop true 
+when
+     $params : FormValidationContext(((String)get("year")).length != 4);
+then
+     System.out.println("Year is not a 4 digit number");
+     $params.setValidationError("Please enter four digits for your year of birth (yyyy)");
+     update($params);
+end
