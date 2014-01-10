@@ -1,4 +1,4 @@
-package org.celllife.iquit.framework.interfaces.web;
+package org.celllife.iquit.interfaces.web;
 
 import java.util.HashMap;
 import java.util.Map;
