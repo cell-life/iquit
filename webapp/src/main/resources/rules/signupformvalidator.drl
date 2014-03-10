@@ -19,3 +19,13 @@ then
      $params.setValidationError("Please enter four digits for your year of birth (yyyy)");
      update($params);
 end
+
+rule "Validate mobile number"
+	no-loop true 
+when
+     $params : FormValidationContext(((String)get("msisdn")).matches("^27[0-9]{9}$") == false);
+then
+     System.out.println("Msisdn does not start with 27");
+     $params.setValidationError("Please fill in your cellphone number starting with 27");
+     update($params);
+end

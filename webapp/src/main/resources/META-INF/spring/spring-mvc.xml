@@ -15,6 +15,7 @@
 
     <mvc:view-controller path="/" view-name="index"/>
     <mvc:view-controller path="/forms/signup" view-name="forms/signup"/>
+    <mvc:view-controller path="/forms/optout" view-name="forms/optout"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>

@@ -28,6 +28,8 @@ public class DataSubmissionController {
 
 	@Autowired
 	CaptureService captureService;
+	
+	// signup form details
 
 	@Value("${capture.signup.study.id}")
 	String signupStudyId;
@@ -44,11 +46,30 @@ public class DataSubmissionController {
 	@Value("${capture.signup.form.version.binding}")
 	String signupFormVersionBinding;
 	
-	private static final String VALIDATION_RULE_SET = "signupformvalidator";
+	// optout form details
+
+	@Value("${capture.optout.study.id}")
+	String optoutStudyId;
+
+	@Value("${capture.optout.form.id}")
+	String optoutFormId;
+
+	@Value("${capture.optout.form.version.name}")
+	String optoutFormVersionName;
+
+	@Value("${capture.optout.form.version.id}")
+	String optoutFormVersionId;
+
+	@Value("${capture.optout.form.version.binding}")
+	String optoutFormVersionBinding;
+	
+	private static final String SIGNUP_VALIDATION_RULE_SET = "signupformvalidator";
+	
+	private static final String OPTOUT_VALIDATION_RULE_SET = "optoutformvalidator";
 
 	@ResponseBody
 	@RequestMapping(value = "/service/iquit-form", method = RequestMethod.POST)
-	public ModelAndView submitForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView submitSignupForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		Map<String, String[]> params = request.getParameterMap();
@@ -63,7 +84,7 @@ public class DataSubmissionController {
 		
 		try {
 			// validate form
-			FormValidator.validate(VALIDATION_RULE_SET, convertedParams);
+			FormValidator.validate(SIGNUP_VALIDATION_RULE_SET, convertedParams);
 
 			// send to capture
 			CaptureContext context = new CaptureContext(signupStudyId, signupFormId, signupFormVersionName,
@@ -71,6 +92,40 @@ public class DataSubmissionController {
 			captureService.sendDataToCapture(context, convertedParams);
 
 			
+		} catch (FormValidationException e) {
+			log.error("Validation error for data '"+params+"' : "+e.getMessage());
+			//response.sendError(400, e.getMessage());
+			map.put("heading", "Error");
+			map.put("msg", e.getMessage());
+		}
+				
+		return new ModelAndView("forms/result", map);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/service/optout-form", method = RequestMethod.POST)
+	public ModelAndView submitOptOutForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		@SuppressWarnings("unchecked")
+		Map<String, String[]> params = request.getParameterMap();
+		
+		Map<String, String> convertedParams = convertParameters(params);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("title", "iQuit");
+		map.put("heading", "Thanks");
+		map.put("msg", "You have been successfully removed from the iQuit campaign.");
+		map.put("back", request.getHeader("Referer"));
+		
+		try {
+			// validate form
+			FormValidator.validate(OPTOUT_VALIDATION_RULE_SET, convertedParams);
+		
+			// send to capture
+			CaptureContext context = new CaptureContext(optoutStudyId, optoutFormId, optoutFormVersionName,
+					optoutFormVersionId, optoutFormVersionBinding);
+			captureService.sendDataToCapture(context, convertedParams);
+
 		} catch (FormValidationException e) {
 			log.error("Validation error for data '"+params+"' : "+e.getMessage());
 			//response.sendError(400, e.getMessage());
