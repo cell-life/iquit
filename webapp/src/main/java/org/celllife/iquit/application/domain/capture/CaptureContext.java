@@ -17,6 +17,10 @@ public class CaptureContext implements Serializable {
 	private String formVersionName;
 	private String formVersionId;
 	private String formVersionBinding;
+	
+	public CaptureContext() {
+		
+	}
 
 	public CaptureContext(String studyId, String formId, String formVersionName, String formVersionId,
 			String formVersionBinding) {

@@ -14,7 +14,7 @@ import org.celllife.iquit.framework.interfaces.validator.FormValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,38 +30,14 @@ public class DataSubmissionController {
 	CaptureService captureService;
 	
 	// signup form details
-
-	@Value("${capture.signup.study.id}")
-	String signupStudyId;
-
-	@Value("${capture.signup.form.id}")
-	String signupFormId;
-
-	@Value("${capture.signup.form.version.name}")
-	String signupFormVersionName;
-
-	@Value("${capture.signup.form.version.id}")
-	String signupFormVersionId;
-
-	@Value("${capture.signup.form.version.binding}")
-	String signupFormVersionBinding;
+	@Autowired()
+	@Qualifier("signupFormContext")
+	CaptureContext signupFormContext;
 	
 	// optout form details
-
-	@Value("${capture.optout.study.id}")
-	String optoutStudyId;
-
-	@Value("${capture.optout.form.id}")
-	String optoutFormId;
-
-	@Value("${capture.optout.form.version.name}")
-	String optoutFormVersionName;
-
-	@Value("${capture.optout.form.version.id}")
-	String optoutFormVersionId;
-
-	@Value("${capture.optout.form.version.binding}")
-	String optoutFormVersionBinding;
+	@Autowired()
+	@Qualifier("optoutFormContext")
+	CaptureContext optoutFormContext;
 	
 	private static final String SIGNUP_VALIDATION_RULE_SET = "signupformvalidator";
 	
@@ -87,9 +63,7 @@ public class DataSubmissionController {
 			FormValidator.validate(SIGNUP_VALIDATION_RULE_SET, convertedParams);
 
 			// send to capture
-			CaptureContext context = new CaptureContext(signupStudyId, signupFormId, signupFormVersionName,
-					signupFormVersionId, signupFormVersionBinding);
-			captureService.sendDataToCapture(context, convertedParams);
+			captureService.sendDataToCapture(signupFormContext, convertedParams);
 
 			
 		} catch (FormValidationException e) {
@@ -122,9 +96,7 @@ public class DataSubmissionController {
 			FormValidator.validate(OPTOUT_VALIDATION_RULE_SET, convertedParams);
 		
 			// send to capture
-			CaptureContext context = new CaptureContext(optoutStudyId, optoutFormId, optoutFormVersionName,
-					optoutFormVersionId, optoutFormVersionBinding);
-			captureService.sendDataToCapture(context, convertedParams);
+			captureService.sendDataToCapture(optoutFormContext, convertedParams);
 
 		} catch (FormValidationException e) {
 			log.error("Validation error for data '"+params+"' : "+e.getMessage());

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="signupFormContext" class="org.celllife.iquit.application.domain.capture.CaptureContext">
+        <property name="studyId" value="${capture.signup.study.id}" />
+        <property name="formId" value="${capture.signup.form.id}" />
+        <property name="formVersionName" value="${capture.signup.form.version.name}" />
+        <property name="formVersionId" value="${capture.signup.form.version.id}" />
+        <property name="formVersionBinding" value="${capture.signup.form.version.binding}" />
+    </bean>
+
+    <bean id="optoutFormContext" class="org.celllife.iquit.application.domain.capture.CaptureContext">
+        <property name="studyId" value="${capture.optout.study.id}" />
+        <property name="formId" value="${capture.optout.form.id}" />
+        <property name="formVersionName" value="${capture.optout.form.version.name}" />
+        <property name="formVersionId" value="${capture.optout.form.version.id}" />
+        <property name="formVersionBinding" value="${capture.optout.form.version.binding}" />
+    </bean>
+    
+</beans>
