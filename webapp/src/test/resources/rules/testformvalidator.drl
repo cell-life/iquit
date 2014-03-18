@@ -1,11 +1,11 @@
 import org.celllife.iquit.framework.interfaces.validator.FormValidationContext
+import java.util.Calendar
  
 rule "Check year of birth is numbers"
 	no-loop true 
 when
      $params : FormValidationContext(((String)get("year")).matches(".*\\d.*") == false);
 then
-     System.out.println("Year does not contain numbers");
      $params.setValidationError("Please enter only numbers for your year of birth");
      update($params);
 end
@@ -15,7 +15,15 @@ rule "Check year of birth is only 4 digits"
 when
      $params : FormValidationContext(((String)get("year")).length != 4);
 then
-     System.out.println("Year is not a 4 digit number");
      $params.setValidationError("Please enter four digits for your year of birth (yyyy)");
+     update($params);
+end
+
+rule "Check age is greater than 18"
+	no-loop true 
+when
+     $params : FormValidationContext(((String)get("year")).matches(".*\\d.*") == true, (Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt((String)get("year"))) < 18);     
+then
+     $params.setValidationError("Unfortunately you must be 18 or over to use this service.");
      update($params);
 end

@@ -32,6 +32,13 @@ public class FormValidatorTest {
 		FormValidator.validate("testformvalidator", params);
 		// if no exception is thrown, we are OK
 	}
+
+	@Test(expected=org.celllife.iquit.framework.interfaces.validator.FormValidationException.class)
+	public void testUnder18() throws Exception {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("year", "2008");
+		FormValidator.validate("testformvalidator", params);
+	}
 	
 	@Test
 	public void testCache() throws Exception {
