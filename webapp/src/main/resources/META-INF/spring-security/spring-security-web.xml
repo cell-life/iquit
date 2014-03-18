@@ -13,38 +13,34 @@
         <security:http-basic />
         <security:custom-filter position="CAS_FILTER" ref="casFilter"/>
     </security:http>
-
+    
+    <security:http pattern="/service/iquit-form" security="none" />
+    <security:http pattern="/service/optout-form" security="none" />
+    
     <security:http authentication-manager-ref="httpBasicAuthenticationManager"
                    auto-config="true"
                    use-expressions="true"
                    pattern="/service/**">
-        <security:intercept-url pattern="/service/iquit-form" access="isAnonymous()"/>
-        <security:intercept-url pattern="/service/optout-form" access="isAnonymous()"/>
-        <security:intercept-url pattern="/service/**" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/service/**" access="isAuthenticated()"/>
         <security:http-basic />
         <security:custom-filter position="CAS_FILTER" ref="casFilter"/>
     </security:http>
     
-	<security:http authentication-manager-ref="httpBasicAuthenticationManager"
-				   auto-config="true" 
-				   use-expressions="true" 
-				   pattern="/resources/**">
-		<security:intercept-url pattern="/resources/**" access="isAnonymous()" />
-	</security:http>
+    <security:http pattern="/resources/**" security="none" />
+    <security:http pattern="/forms/**" security="none" />
 
-	<security:http  authentication-manager-ref="casAuthenticationManager"
-					entry-point-ref="casEntryPoint" 
-					auto-config="true" 
-					use-expressions="true">
-		<security:intercept-url pattern="/forms/**" access="isAnonymous()" />
-		<security:intercept-url pattern="/**" access="isAuthenticated()" />
-		<security:intercept-url pattern="/**" access="hasRole('ROLE_IQUIT')" />
+    <security:http authentication-manager-ref="casAuthenticationManager"
+                   entry-point-ref="casEntryPoint"
+                   auto-config="true"
+                   use-expressions="true">
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_IQUIT')" />
 
-		<security:custom-filter position="CAS_FILTER" ref="casFilter" />
+        <security:custom-filter position="CAS_FILTER" ref="casFilter"/>
 
-		<security:logout logout-success-url="/cas-logout.jsp" />
-		<security:custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER" />
-		<security:custom-filter ref="singleLogoutFilter" before="CAS_FILTER" />
-	</security:http>
+    	<security:logout logout-success-url="/cas-logout.jsp"/>
+    	<security:custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
+    	<security:custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
+    </security:http>
 
 </beans>
