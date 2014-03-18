@@ -1,5 +1,6 @@
 <h1>Stop the SMSs</h1>
 <p>Thanks for trying iQuit. We're sorry that we could not help you on your journey.</p>
+<h2></h2>
 <form action="../service/optout-form" method="post">
 	<table>
 		<tbody>
@@ -15,7 +16,7 @@
 			</tr>
 			<tr>
 				<td>Other reason:</td>
-				<td><input name="other" type="text" /></td>
+				<td><input name="other_specify" type="text" /></td>
 			</tr>
 			<tr>
 				<td>Any other feedback?</td>

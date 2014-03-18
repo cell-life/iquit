@@ -39,6 +39,7 @@
     	<ul>
     		<li><a href="http://www.iquit.mobi">iQuit mobi site</a></li>
     		<li><a href="forms/signup">iQuit signup form example</a></li>
+    		<li><a href="forms/optout">iQuit opt out form example</a></li>
     		<li><a href="http://www.cell-life.org/datacapture">Capture</a></li>
     		<li><a href="http://communicate.cell-life.org">Communicate</a></li>
     	</ul>
