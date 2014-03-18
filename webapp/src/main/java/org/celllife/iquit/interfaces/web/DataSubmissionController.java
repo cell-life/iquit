@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.celllife.iquit.application.campaignselector.CampaignSelectorService;
 import org.celllife.iquit.application.capture.CaptureService;
 import org.celllife.iquit.application.domain.capture.CaptureContext;
 import org.celllife.iquit.framework.interfaces.validator.FormValidationException;
@@ -25,6 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class DataSubmissionController {
 	
 	private static Logger log = LoggerFactory.getLogger(DataSubmissionController.class);
+	
+	@Autowired
+	CampaignSelectorService campaignSelectorService;
 
 	@Autowired
 	CaptureService captureService;
@@ -64,6 +68,12 @@ public class DataSubmissionController {
 
 			// send to capture
 			captureService.sendDataToCapture(signupFormContext, convertedParams);
+			
+			// get the msisdn
+			String msisdn = convertedParams.get("msisdn");
+			
+			// add to communicate campaign
+			campaignSelectorService.addToCampaign(msisdn, convertedParams);
 
 			
 		} catch (FormValidationException e) {
@@ -97,6 +107,12 @@ public class DataSubmissionController {
 		
 			// send to capture
 			captureService.sendDataToCapture(optoutFormContext, convertedParams);
+			
+			// get the msisdn
+			String msisdn = convertedParams.get("msisdn");
+
+			// remove from all known communicate campaigns
+			campaignSelectorService.removeFromCampaigns(msisdn);
 
 		} catch (FormValidationException e) {
 			log.error("Validation error for data '"+params+"' : "+e.getMessage());

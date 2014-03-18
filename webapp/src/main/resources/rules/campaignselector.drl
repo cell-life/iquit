@@ -1,23 +1,23 @@
 import org.celllife.iquit.application.domain.campaignselector.RulesContext
  
+rule "Select All/Not drinker campaign"
+	no-loop true 
+when
+     $params : RulesContext(get("drinks") == "no");
+then
+     System.out.println("Bob is assigned to not drinking campaign");
+     $params.setReturnValue("no_drinks");
+     update($params);
+end
+
 rule "Select Male/Drinker campaign"
 	no-loop true 
 when
      $params : RulesContext(get("gender") == "male" && get("drinks") == "yes");
-then
-     System.out.println("Bob is assigned to male drinking campaign");
-     $params.setReturnValue(new Integer(1));
-     update($params);
-end
-
-rule "Select Male/Not Drinker campaign"
-	no-loop true 
-when
-     $params : RulesContext(get("gender") == "male" && get("drinks") == "no");
      
 then
-     System.out.println("Bob is assigned to male non-drinking campaign");
-     $params.setReturnValue(new Integer(2));
+     System.out.println("Bob is assigned to male drinking campaign");
+     $params.setReturnValue("male_drinks");
      update($params);
 end
 
@@ -28,17 +28,6 @@ when
      
 then
      System.out.println("Bob is assigned to female drinking campaign");
-     $params.setReturnValue(new Integer(3));
-     update($params);
-end
-
-rule "Select Female/Not Drinker campaign"
-	no-loop true 
-when
-     $params : RulesContext(get("gender") == "female" && get("drinks") == "no");
-     
-then
-     System.out.println("Bob is assigned to female non-drinking campaign");
-     $params.setReturnValue(new Integer(4));
+     $params.setReturnValue("female_drinks");
      update($params);
 end

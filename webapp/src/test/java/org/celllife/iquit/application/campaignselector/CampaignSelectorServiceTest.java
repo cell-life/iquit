@@ -5,9 +5,12 @@ import java.util.HashMap;
 import junit.framework.Assert;
 
 import org.celllife.iquit.test.TestConfiguration;
+import org.drools.runtime.StatelessKnowledgeSession;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,13 +21,29 @@ public class CampaignSelectorServiceTest {
 	@Autowired
 	CampaignSelectorService cService;
 	
+	@Autowired
+	@Qualifier("ksession1")
+	StatelessKnowledgeSession ksession;
+
+	@Test
+	@Ignore("integration test")
+	public void testAddToAndRemoveFromCampaign() throws Exception {
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("gender", "female");
+		parameters.put("drinks", "no");
+		cService.addToCampaign("27768198075", parameters);
+		cService.removeFromCampaigns("27768198075");
+	}
+	
 	@Test
 	public void testMaleDrinkerCampaign() throws Exception {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("gender", "male");
 		parameters.put("drinks", "yes");
-		Integer campaign = cService.selectCampaign(parameters);
-		Assert.assertEquals(new Integer(1), campaign);
+		CampaignSelectorServiceImpl cServiceImpl = new CampaignSelectorServiceImpl();
+		cServiceImpl.setKsession(ksession);
+		String campaign = cServiceImpl.runRules(parameters);
+		Assert.assertEquals("male_drinks", campaign);
 	}
 
 	@Test
@@ -32,8 +51,10 @@ public class CampaignSelectorServiceTest {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("gender", "male");
 		parameters.put("drinks", "no");
-		Integer campaign = cService.selectCampaign(parameters);
-		Assert.assertEquals(new Integer(2), campaign);
+		CampaignSelectorServiceImpl cServiceImpl = new CampaignSelectorServiceImpl();
+		cServiceImpl.setKsession(ksession);
+		String campaign = cServiceImpl.runRules(parameters);
+		Assert.assertEquals("no_drinks", campaign);
 	}
 
 	@Test
@@ -41,8 +62,10 @@ public class CampaignSelectorServiceTest {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("gender", "female");
 		parameters.put("drinks", "yes");
-		Integer campaign = cService.selectCampaign(parameters);
-		Assert.assertEquals(new Integer(3), campaign);
+		CampaignSelectorServiceImpl cServiceImpl = new CampaignSelectorServiceImpl();
+		cServiceImpl.setKsession(ksession);
+		String campaign = cServiceImpl.runRules(parameters);
+		Assert.assertEquals("female_drinks", campaign);
 	}
 
 	@Test
@@ -50,7 +73,9 @@ public class CampaignSelectorServiceTest {
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("gender", "female");
 		parameters.put("drinks", "no");
-		Integer campaign = cService.selectCampaign(parameters);
-		Assert.assertEquals(new Integer(4), campaign);
+		CampaignSelectorServiceImpl cServiceImpl = new CampaignSelectorServiceImpl();
+		cServiceImpl.setKsession(ksession);
+		String campaign = cServiceImpl.runRules(parameters);
+		Assert.assertEquals("no_drinks", campaign);
 	}
 }

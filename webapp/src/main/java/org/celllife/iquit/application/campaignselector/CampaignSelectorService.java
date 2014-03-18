@@ -12,7 +12,20 @@ public interface CampaignSelectorService {
 	 * Note: should specific which rules should be used in order to make this more generic
 	 * 
 	 * @param parameters Map of data to be used by the rules in order to select the campaign.
-	 * @return Integer Communicate campaign identifier (could return a more complex object)
+	 * @return Long Communicate campaign identifier (could return a more complex object)
 	 */
-	Integer selectCampaign(Map<String, Object> parameters);
+	Long selectCampaign(Map<String, Object> parameters);
+	
+	/**
+	 * Selects the correct campaign given the answers to a form and then adds to the campaign outcome.
+	 * @param msisdn
+	 * @param parameters
+	 */
+	void addToCampaign(String msisdn, Map<String, String> parameters);
+
+	/**
+	 * Removes the user from all campaigns
+	 * @param msisdn
+	 */
+	void removeFromCampaigns(String msisdn);
 }
