@@ -34,6 +34,20 @@
 				<entry key="no_drinks" value="${communicate.no_drinks.campaign.id}" />
 				<entry key="male_drinks" value="${communicate.male_drink.campaign.id}" />
 				<entry key="female_drinks" value="${communicate.female_drinks.campaign.id}" />
+				<entry key="linked_B" value="${communicate.linked_B.campaign.id}" />
+				<entry key="linked_C" value="${communicate.linked_V.campaign.id}" />
+				<entry key="linked_E" value="${communicate.linked_E.campaign.id}" />
+				<entry key="linked_F" value="${communicate.linked_F.campaign.id}" />
+				<entry key="linked_H" value="${communicate.linked_H.campaign.id}" />
+				<entry key="linked_I" value="${communicate.linked_I.campaign.id}" />
+				<entry key="crave_J" value="${communicate.crave_J.campaign.id}" />
+				<entry key="crave_K" value="${communicate.crave_K.campaign.id}" />
+				<entry key="crave_L" value="${communicate.crave_L.campaign.id}" />
+				<entry key="crave_M" value="${communicate.crave_M.campaign.id}" />
+				<entry key="relapse_N" value="${communicate.relapse_N.campaign.id}" />
+				<entry key="relapse_O" value="${communicate.relapse_O.campaign.id}" />
+				<entry key="relapse_P" value="${communicate.relapse_P.campaign.id}" />
+				<entry key="checkup_Q" value="${communicate.checkup_Q.campaign.id}" />
 			</map>
 		</constructor-arg>
 	</bean>
