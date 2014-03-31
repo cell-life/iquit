@@ -48,9 +48,9 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:git@git.cell-life.org:celllife-iquit.git</connection>
-        <developerConnection>scm:git:git@git.cell-life.org:celllife-iquit.git</developerConnection>
-        <url>https://www.cell-life.org/gitlab/celllife-iquit</url>
+        <connection>scm:git:git@git.cell-life.org:iquit.git</connection>
+        <developerConnection>scm:git:git@git.cell-life.org:iquit.git</developerConnection>
+        <url>https://www.cell-life.org/gitlab/iquit</url>
     </scm>
 
     <dependencyManagement>
