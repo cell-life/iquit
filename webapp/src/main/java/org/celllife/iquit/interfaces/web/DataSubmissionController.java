@@ -145,8 +145,9 @@ public class DataSubmissionController {
 		Date startDate = new Date();
 		try {
 			String days = quitDateParameter.replace("in", "").replace("days", "");
+			int actualDays =  Integer.parseInt(days) - 4;
 			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DATE, Integer.parseInt(days));
+			cal.add(Calendar.DATE, actualDays);
 			startDate = cal.getTime();
 		} catch (NumberFormatException e) {
 			log.error("Could not convert "+quitDateParameter+" to a number", e);
