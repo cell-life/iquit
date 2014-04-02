@@ -1,5 +1,6 @@
 package org.celllife.iquit.application.campaignselector;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -20,8 +21,9 @@ public interface CampaignSelectorService {
 	 * Selects the correct campaign given the answers to a form and then adds to the campaign outcome.
 	 * @param msisdn
 	 * @param parameters
+	 * @param startDate the date on which they should start their campaign
 	 */
-	void addToCampaign(String msisdn, Map<String, String> parameters);
+	void addToCampaign(String msisdn, Map<String, String> parameters, Date startDate);
 
 	/**
 	 * Removes the user from all campaigns

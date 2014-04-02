@@ -45,7 +45,6 @@
 		<td>When would you like to quit?</td>
 		<td>
 			<select name="quit_date">
-			  <option value="in3days">in 3 days</option>
 			  <option value="in7days">in 7 days</option>
 			  <option value="in10days">in 10 days</option>
 			  <option value="in14days">in 14 days</option>

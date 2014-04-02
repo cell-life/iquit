@@ -1,5 +1,6 @@
 package org.celllife.iquit.application.campaignselector;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.Assert;
@@ -31,7 +32,7 @@ public class CampaignSelectorServiceTest {
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("gender", "female");
 		parameters.put("drinks", "no");
-		cService.addToCampaign("27768198075", parameters);
+		cService.addToCampaign("27768198075", parameters, new Date());
 		cService.removeFromCampaigns("27768198075");
 	}
 	

@@ -1,5 +1,7 @@
 package org.celllife.iquit.interfaces.web;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,8 +74,11 @@ public class DataSubmissionController {
 			// get the msisdn
 			String msisdn = convertedParams.get("msisdn");
 			
+			// get the start date
+			Date startDate = getStartDate(convertedParams.get("quit_date"));
+			
 			// add to communicate campaign
-			campaignSelectorService.addToCampaign(msisdn, convertedParams);
+			campaignSelectorService.addToCampaign(msisdn, convertedParams, startDate);
 
 			
 		} catch (FormValidationException e) {
@@ -134,5 +139,18 @@ public class DataSubmissionController {
 			}
 		}
 		return newParams;
+	}
+
+	private Date getStartDate(String quitDateParameter) {
+		Date startDate = new Date();
+		try {
+			String days = quitDateParameter.replace("in", "").replace("days", "");
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, Integer.parseInt(days));
+			startDate = cal.getTime();
+		} catch (NumberFormatException e) {
+			log.error("Could not convert "+quitDateParameter+" to a number", e);
+		}
+		return startDate;
 	}
 }

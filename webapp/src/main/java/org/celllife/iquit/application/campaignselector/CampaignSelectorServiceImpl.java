@@ -1,5 +1,7 @@
 package org.celllife.iquit.application.campaignselector;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public class CampaignSelectorServiceImpl implements CampaignSelectorService {
 	}
 	
 	@Override
-	public void addToCampaign(String msisdn, Map<String, String> parameters) {
+	public void addToCampaign(String msisdn, Map<String, String> parameters, Date startDate) {
 		Map<String, Object> parameters2 = new HashMap<String, Object>();
 		for (String key : parameters.keySet()) {
 			String object = parameters.get(key).toString();
@@ -48,7 +50,7 @@ public class CampaignSelectorServiceImpl implements CampaignSelectorService {
 		}
 		String campaign_name = runRules(parameters2);
 		Long campaignId = Long.parseLong(campaignMap.get(campaign_name.trim()));
-		addToCampaign(msisdn, campaignId);
+		addToCampaign(msisdn, campaignId, startDate);
 	}
 
 	@Override
@@ -75,10 +77,11 @@ public class CampaignSelectorServiceImpl implements CampaignSelectorService {
 		return campaign_name;
 	}
 
-	void addToCampaign(String msisdn, Long campaignId) {
+	void addToCampaign(String msisdn, Long campaignId, Date startDate) {
 		log.debug("selectCampaign [end]. Adding msisdn '"+msisdn+"' to campaign '"+campaignId+"'.");
 		ContactDto contact = new ContactDto();
 		contact.setMsisdn(msisdn);
+		contact.setStartDate(new SimpleDateFormat("yyyy-MM-dd").format(startDate));
 		try {
 			communicateClient.getCampaignService().addContactToCampaign(campaignId, contact);
 		} catch (RestCommandException e) {
